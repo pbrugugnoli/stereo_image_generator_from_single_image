@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(description='MiDaS')
 parser.add_argument('--input', default='./example', type=str, help='Input filename or folder.')
 args = parser.parse_args()
 
-IPD = 6.5
+IPD = 6.5/2
 MONITOR_W = 38.5
 
 
@@ -42,6 +42,9 @@ def write_depth(depth, bits=1, reverse=True):
 def generate_stereo(left_img, depth):
     h, w, c = left_img.shape
 
+    #PEB: depth map manipulation as suggested in 'Three methods that improve the visual quality of colour anaglyphs"
+    depth = np.power(depth, 0.5)
+    
     depth_min = depth.min()
     depth_max = depth.max()
     depth = (depth - depth_min) / (depth_max - depth_min)
